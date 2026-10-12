@@ -23,6 +23,7 @@ status: draft
 1. 四步流程：`dotnet-CycloneDX` 掃 .NET → `retire` 掃 libman 管理的前端函式庫（`WFAHRS/wwwroot/lib`）→ `cyclonedx-cli merge` 合併兩份 SBOM → `trivy sbom` 對合併檔統一掃弱點與 license。
 2. 中間檔（`.dotnet.cdx.json`、`.js.cdx.json`、license 暫存檔）執行完刪除，只留合併檔 `{專案}.{版本}.cdx.json` 與報告。
 3. 其餘（版本由 csproj 擷取、license 前綴過濾）同前一支腳本。
+4. 2026-10-12 修改：JSON 弱點報告改為 `trivy sbom ... --list-all-pkgs=false --format json`（見 [[sources/2026-10-12-npm-sbom-scan-script]]）。
 
 ## 關鍵主張與數據
 - 「retire 發現弱點時 exit code 為 13,故以 || true 避免中斷腳本」— 意涵：與 [[tools/retire-js]] README 的 exit 13 一致；腳本用 `set -euo pipefail`，故需吞掉。

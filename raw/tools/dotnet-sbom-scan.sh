@@ -23,7 +23,7 @@ mkdir -p .sbom
 dotnet-CycloneDX WFAHRS.sln -o .sbom -fn "$P.$V.cdx.json" --json
 
 trivy sbom "$SBOM" --scanners vuln    --format table --output ".sbom/$P.$V.vuln.txt"
-trivy sbom "$SBOM" --scanners vuln    --format json  --output ".sbom/$P.$V.vuln.json"
+trivy sbom "$SBOM" --scanners vuln    --list-all-pkgs=false --format json  --output ".sbom/$P.$V.vuln.json"
 
 # license 報告排除 System/Microsoft/runtime/NETStandard 開頭的套件(皆為 Microsoft 發行,可免費商用)
 LIC_SBOM=".sbom/$P.$V.lic.tmp.cdx.json"

@@ -4,7 +4,7 @@ type: practice
 tags: [sbom, practice, dotnet, cyclonedx, trivy, retire, script]
 sources: [raw/tools/dotnet-sbom-scan.sh, raw/tools/dotnet-js-sbom-scan.sh]
 created: 2026-10-07
-updated: 2026-10-07
+updated: 2026-10-12
 status: draft
 ---
 
@@ -18,14 +18,14 @@ status: draft
 ## 適用情境
 - .NET 方案（`.sln`），版本號寫在 csproj 的 `VersionPrefix`／`VersionSuffix`。[^a]
 - 需要檢查 NuGet 套件授權（改用此路線的動機見 [[sources/2026-10-05-cyclonedx-dotnet-practice]]：syft 取不到 .NET 授權資訊）。
-- 前端以 libman 放進 `wwwroot/lib`，無 `package.json`，故不適用 [[tools/cyclonedx-npm]]。[^b]
+- 前端以 libman 放進 `wwwroot/lib`，無 `package.json`，故不適用 [[tools/cyclonedx-npm]]；有 npm 依賴樹的前端見 [[practices/npm-sbom-cyclonedx-trivy]]。[^b]
 
 ## 流程步驟
 1. 擷取版本：以 `sed` 從 csproj 取 `VersionPrefix`、`VersionSuffix`，組成 `V`。[^a]
 2. 產 .NET SBOM：`dotnet-CycloneDX <sln> -o .sbom -fn <專案>.<V>.cdx.json --json`。[^a]
 3. （JS 擴充）`retire --path <wwwroot/lib> --outputformat cyclonedxJSON --outputpath <js.cdx.json> || true`；retire 發現弱點 exit code 為 13，需吞掉。[^b]
 4. （JS 擴充）`cyclonedx-cli merge --input-files <dotnet> <js> --output-file <all> --output-format json`。[^b]
-5. 弱點：`trivy sbom <SBOM> --scanners vuln --format table|json --output ...`（各輸出一份）。[^a][^b]
+5. 弱點：`trivy sbom <SBOM> --scanners vuln --format table|json --output ...`（各輸出一份；json 版加 `--list-all-pkgs=false`，2026-10-12 新增，推測為只列有弱點的套件，待驗證）。[^a][^b][^c]
 6. 授權：先用 `python -I` 濾掉 `System`／`Microsoft`／`runtime`／`NETStandard` 開頭元件，再 `trivy sbom --scanners license --severity UNKNOWN,MEDIUM,HIGH,CRITICAL`。[^a][^b]
 7. 清掉中間檔，只留合併 SBOM 與報告（JS 版）。[^b]
 
@@ -65,4 +65,5 @@ status: draft
 ## 參考來源
 [^a]: [[sources/2026-10-07-dotnet-sbom-scan-script]]
 [^b]: [[sources/2026-10-07-dotnet-js-sbom-scan-script]]
+[^c]: [[sources/2026-10-12-npm-sbom-scan-script]]（`--list-all-pkgs=false` 變更紀錄）
 [^d]: [[analyses/sbom-practice-talk.marp|簡報：SBOM 實戰分享]]

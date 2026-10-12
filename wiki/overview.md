@@ -2,9 +2,9 @@
 title: SBOM 研究總覽
 type: overview
 tags: [sbom, overview]
-sources: [raw/standards/CycloneDX BOM Standard.md, raw/tools/CycloneDX CLI tool for SBOM.md, raw/tools/sbom-tools.md, raw/tools/clonedx-dotnet.md, raw/tools/clonedx-dotnet-practice.md, raw/tools/cyclonedx-npm.md, raw/tools/dotnet-sbom-scan.sh, raw/tools/dotnet-js-sbom-scan.sh, raw/tools/RetireJS - repo.md, raw/tools/Retire.js - website.md, raw/tools/vexctl.md, raw/tools/Microsoft sbom-tool.md, raw/tools/Overview of Anchore Open Source tools.md, raw/tools/Syft.md, raw/tools/Grype.md, raw/tools/SBOM Generation.md, raw/tools/Vulnerability Scanning.md, raw/tools/syft-grype.sample.md, raw/standards/Software Identification (SWID) Tagging.md, raw/industry/What Is VEX(Vulnerability Exploitability eXchange).md, raw/industry/軟體物料清單SBOM發展趨勢.md, raw/industry/Common Vulnerabilities and Exposures.md, raw/industry/公共漏洞和暴露 - 維基百科，自由的百科全書.md, raw/industry/Software supply chain.md, raw/industry/Types of Software Bill of Material (SBOM) Documents.md, raw/industry/Best Practices for Naming and Directory Conventions for SBOMs (Software Bill of Materials) in Open Source Projects.md]
+sources: [raw/standards/CycloneDX BOM Standard.md, raw/tools/CycloneDX CLI tool for SBOM.md, raw/tools/sbom-tools.md, raw/tools/clonedx-dotnet.md, raw/tools/clonedx-dotnet-practice.md, raw/tools/cyclonedx-npm.md, raw/tools/dotnet-sbom-scan.sh, raw/tools/dotnet-js-sbom-scan.sh, raw/tools/npm-sbom-scan.sh, raw/tools/RetireJS - repo.md, raw/tools/Retire.js - website.md, raw/tools/vexctl.md, raw/tools/Microsoft sbom-tool.md, raw/tools/Overview of Anchore Open Source tools.md, raw/tools/Syft.md, raw/tools/Grype.md, raw/tools/SBOM Generation.md, raw/tools/Vulnerability Scanning.md, raw/tools/syft-grype.sample.md, raw/standards/Software Identification (SWID) Tagging.md, raw/industry/What Is VEX(Vulnerability Exploitability eXchange).md, raw/industry/軟體物料清單SBOM發展趨勢.md, raw/industry/Common Vulnerabilities and Exposures.md, raw/industry/公共漏洞和暴露 - 維基百科，自由的百科全書.md, raw/industry/Software supply chain.md, raw/industry/Types of Software Bill of Material (SBOM) Documents.md, raw/industry/Best Practices for Naming and Directory Conventions for SBOMs (Software Bill of Materials) in Open Source Projects.md]
 created: 2026-10-01
-updated: 2026-10-07
+updated: 2026-10-12
 status: draft
 ---
 
@@ -22,7 +22,7 @@ status: draft
 7. 在 Python / .NET / React(TypeScript) / 容器專案中，如何在 CI/CD 自動產出並管理 SBOM？
 
 ## 目前論點
-（截至 2026-10，基於 27 份來源（NIST SWID 頁、Anchore 官方文件、Microsoft sbom-tool、vexctl、CycloneDX 組織首頁、cyclonedx-dotnet／cyclonedx-npm／cyclonedx-cli／sbom-tools README 為一手，另含 4 份使用者實測／腳本，其餘為業界／二手），尚無法規與規格一手資料，論點僅為初步。）
+（截至 2026-10，基於 28 份來源（NIST SWID 頁、Anchore 官方文件、Microsoft sbom-tool、vexctl、CycloneDX 組織首頁、cyclonedx-dotnet／cyclonedx-npm／cyclonedx-cli／sbom-tools README 為一手，另含 5 份使用者實測／腳本，其餘為業界／二手），尚無法規與規格一手資料，論點僅為初步。）
 
 1. **SBOM 是供應鏈透明度的基礎，但非完整性保證**：它列出元件，需搭配 provenance／簽章才能驗證完整性。[^a]
 2. **類型決定用途**：CISA 定義 Design / Source / Build / Analyzed / Deployed / Runtime 六類，產生方式不同，涵蓋與限制各異。見 [[concepts/sbom-types]]。[^b]
@@ -37,13 +37,14 @@ status: draft
 
 11. **「產生之後」的工具層已浮現**：官方 [[tools/cyclonedx-cli]] 負責驗證、合併、轉換（含 SPDX JSON 2.3，可能遺失資訊）、簽章；第三方 [[tools/sbom-tools]] 負責語意 diff、品質評分、16 種合規標準驗證與機群查詢，可串接 syft 的 stdout。其法規描述（如 CISA 2026 最低要素 v2.1 為 NTIA 2021 的更嚴格後繼版）僅為工具方轉述，待法規原文核對。[^m1][^m2][^m3]
 
-12. **.NET 已有「專案檔 → CycloneDX → trivy」的腳本化流程**：使用者以 dotnet-CycloneDX 產 SBOM，由 [[tools/trivy]] 掃弱點與授權（排除 Microsoft 前綴套件），另用 retire 掃 libman 前端函式庫並以 [[tools/cyclonedx-cli]] 合併；retire 有覆蓋缺口（CSS、部分函式庫）。為腳本設計，產出品質未驗證。見 [[practices/dotnet-sbom-cyclonedx-trivy]]。[^s1][^s2]
+12. **.NET 已有「專案檔 → CycloneDX → trivy」的腳本化流程**：使用者以 dotnet-CycloneDX 產 SBOM，由 [[tools/trivy]] 掃弱點與授權（排除 Microsoft 前綴套件），另用 retire 掃 libman 前端函式庫並以 [[tools/cyclonedx-cli]] 合併；retire 有覆蓋缺口（CSS、部分函式庫）。為腳本設計，產出品質未驗證。見 [[practices/dotnet-sbom-cyclonedx-trivy]]。前端若有 npm 依賴樹，則另有 `cyclonedx-npm --package-lock-only --omit dev` → trivy 的腳本（只讀 lockfile，版本取日期），見 [[practices/npm-sbom-cyclonedx-trivy]]。三支腳本的 JSON 弱點報告皆加 `--list-all-pkgs=false`（用途待驗證）。[^s1][^s2][^s3]
 
 13. **SBOM 要持續運作，而非一次性產出**：每次建置重產，並在弱點 DB 更新後對既有 SBOM 重掃；CI gate 可擋「新增高風險弱點且無 VEX」「授權不核可」「格式驗證失敗」。此為使用者簡報的作者建議，非標準要求，多數指令未實測；簽章尚未實作。見 [[practices/sbom-lifecycle-and-ci]]。[^t]
 
 [^t]: [[analyses/sbom-practice-talk.marp|簡報：SBOM 實戰分享]]（本庫衍生品，非獨立來源）
 [^s1]: [[sources/2026-10-07-dotnet-sbom-scan-script]]
 [^s2]: [[sources/2026-10-07-dotnet-js-sbom-scan-script]]
+[^s3]: [[sources/2026-10-12-npm-sbom-scan-script]]
 [^m1]: [[sources/2026-10-06-cyclonedx-org-github]]
 [^m2]: [[sources/2026-10-06-cyclonedx-cli-readme]]
 [^m3]: [[sources/2026-10-06-sbom-tools-readme]]

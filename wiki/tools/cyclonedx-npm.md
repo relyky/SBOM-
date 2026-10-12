@@ -3,12 +3,12 @@ title: CycloneDX for npm（cyclonedx-npm）
 type: tool
 tags: [sbom, tool, cyclonedx, npm, nodejs]
 aliases: [cyclonedx-npm, "@cyclonedx/cyclonedx-npm", cyclonedx-node-npm]
-sources: [raw/tools/cyclonedx-npm.md]
+sources: [raw/tools/cyclonedx-npm.md, raw/tools/npm-sbom-scan.sh]
 vendor: CycloneDX（GitHub 組織）
 license: Apache 2.0
 version_checked: 6.0.1（截至 2026-10，依 npm 套件頁；僅讀文件，未實測）
 created: 2026-10-07
-updated: 2026-10-07
+updated: 2026-10-12
 status: stub
 ---
 
@@ -49,7 +49,8 @@ README 無 pipeline 範例；僅說明可作為 devDependency 以 `npx` 執行�
   - 僅 npm 生態；與 [[tools/retire-js]]（可抓 vendored JS 檔）、[[tools/syft-grype|Syft]] 的元件清單差異未實測。（對照為本庫推論）
 
 ## 實測紀錄
-尚無。建議在 React／TypeScript 專案實測：元件數、授權欄位、與 Syft／Retire.js 比較。
+使用者已寫成腳本：`cyclonedx-npm --package-lock-only --omit dev --output-file <SBOM> client/package.json`，再交給 [[tools/trivy]] 掃弱點與授權；腳本無實跑輸出，元件數、授權欄位、與 Syft／Retire.js 的比較仍待實測。[^u] 見 [[practices/npm-sbom-cyclonedx-trivy]]。
 
 ## 參考來源
 [^s]: [[sources/2026-10-07-cyclonedx-npm-readme]]
+[^u]: [[sources/2026-10-12-npm-sbom-scan-script]]

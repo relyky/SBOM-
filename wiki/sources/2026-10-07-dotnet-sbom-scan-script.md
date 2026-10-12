@@ -23,6 +23,7 @@ status: draft
 1. 在方案根目錄（含 `WFAHRS.sln`）執行，兩步完成：`dotnet-CycloneDX` 產 SBOM，再用 `trivy sbom` 掃弱點與 license，輸出全放 `.sbom/`。
 2. 版本字串由 `WFAHRS.csproj` 的 `VersionPrefix`、`VersionSuffix` 以 `sed` 擷取，組成 `{專案}.{版本}.cdx.json` 檔名，符合 [[practices/sbom-file-naming]] 的 `.cdx.json` 慣例。
 3. 弱點報告同時輸出 table（`.vuln.txt`）與 json（`.vuln.json`）；license 報告另以 `python -I` 先濾掉 `System`／`Microsoft`／`runtime`／`NETStandard` 開頭的元件，再用 trivy 的 license scanner、嚴重度 `UNKNOWN,MEDIUM,HIGH,CRITICAL` 輸出 `.lic.txt`。
+4. 2026-10-12 修改：JSON 弱點報告改為 `trivy sbom ... --list-all-pkgs=false --format json`（見 [[sources/2026-10-12-npm-sbom-scan-script]]）；檔尾補換行。
 
 ## 關鍵主張與數據
 - 「license 報告排除 System/Microsoft/runtime/NETStandard 開頭的套件(皆為 Microsoft 發行,可免費商用)」— 意涵：以名稱前綴白名單降低授權雜訊；前綴比對可能誤殺同名前綴的第三方套件（本庫推論）。

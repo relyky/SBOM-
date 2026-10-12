@@ -2,12 +2,12 @@
 title: Trivy
 type: tool
 tags: [sbom, tool, vex, scanner]
-sources: [raw/industry/What Is VEX(Vulnerability Exploitability eXchange).md, raw/tools/dotnet-sbom-scan.sh, raw/tools/dotnet-js-sbom-scan.sh]
+sources: [raw/industry/What Is VEX(Vulnerability Exploitability eXchange).md, raw/tools/dotnet-sbom-scan.sh, raw/tools/dotnet-js-sbom-scan.sh, raw/tools/npm-sbom-scan.sh]
 vendor: Aqua Security
 license: 開源（具體授權待驗證）
 version_checked: 未查證（來源為 2024-07 文章）
 created: 2026-10-01
-updated: 2026-10-07
+updated: 2026-10-12
 status: stub
 ---
 
@@ -34,7 +34,7 @@ trivy sbom debian11.sbom.cdx --vex trivy.vex.cdx
 （命令取自來源[^a]，尚未實測）
 
 ## CI/CD 整合
-使用者腳本以 `trivy sbom <SBOM> --scanners vuln` 掃弱點（table、json 各一份），並以 `--scanners license --severity UNKNOWN,MEDIUM,HIGH,CRITICAL` 掃授權，用於 CycloneDX SBOM（來自 dotnet-CycloneDX，或再與 retire 輸出合併）。需能下載弱點資料庫。[^s] 見 [[practices/dotnet-sbom-cyclonedx-trivy]]。
+使用者腳本以 `trivy sbom <SBOM> --scanners vuln` 掃弱點（table、json 各一份），並以 `--scanners license --severity UNKNOWN,MEDIUM,HIGH,CRITICAL` 掃授權，用於 CycloneDX SBOM（來自 dotnet-CycloneDX，或再與 retire 輸出合併，或來自 [[tools/cyclonedx-npm]]）。需能下載弱點資料庫。[^s] 三支腳本的 JSON 弱點報告皆加 `--list-all-pkgs=false`（推測為只列有弱點的套件，待驗證）。[^n] 見 [[practices/dotnet-sbom-cyclonedx-trivy]]、[[practices/npm-sbom-cyclonedx-trivy]]。
 
 ## 優缺點
 - 優：可串起「產生 SBOM → 掃描 → 以 VEX 去除不可利用弱點」流程。[^a]
@@ -46,3 +46,4 @@ trivy sbom debian11.sbom.cdx --vex trivy.vex.cdx
 ## 參考來源
 [^a]: [[sources/2026-10-01-aqua-what-is-vex]]
 [^s]: [[sources/2026-10-07-dotnet-sbom-scan-script]]、[[sources/2026-10-07-dotnet-js-sbom-scan-script]]
+[^n]: [[sources/2026-10-12-npm-sbom-scan-script]]

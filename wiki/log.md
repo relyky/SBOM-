@@ -157,3 +157,13 @@ updated: 2026-10-01
 ## [2026-10-07] schema | slides/ 更名為 outputs/
 - 修改：目錄 `slides/` → `outputs/`（涵蓋簡報、PDF、圖表等匯出成品）；CLAUDE.md §3、§4.1 與 [[index]] 同步更新
 - 備註：現有檔案 `outputs/sbom-practice-talk.pptx`，對應 [[analyses/sbom-practice-talk.marp]]
+
+## [2026-10-12] ingest | npm-sbom-scan.sh（新）與兩支 .NET 腳本的修改
+- 新增：[[sources/2026-10-12-npm-sbom-scan-script]]、[[practices/npm-sbom-cyclonedx-trivy]]
+- 更新：[[tools/cyclonedx-npm]]（實測紀錄）、[[tools/trivy]]（`--list-all-pkgs=false`）、[[practices/dotnet-sbom-cyclonedx-trivy]]、[[sources/2026-10-07-dotnet-sbom-scan-script]]、[[sources/2026-10-07-dotnet-js-sbom-scan-script]]、[[overview]]（論點 12，來源 28 份）、[[index]]
+- 備註：無矛盾。`dotnet-sbom-scan.sh`、`dotnet-js-sbom-scan.sh` 僅新增 `--list-all-pkgs=false`（及檔尾換行），未另建來源頁；該旗標用途為推測，待驗證。npm 腳本專案為 `TFB_RES-client`，與 `WFAHRS` 不同。`.obsidian/` 設定檔非來源，未 ingest。
+
+## [2026-10-12] lint | 第八次健康檢查
+- 結果：機械檢查全過（65 頁無失效連結、孤兒頁、frontmatter 缺欄；`raw/` 皆已 ingest；index 皆收錄）。`index` 頁首格式說明與 log 指向已刪除來源頁的連結為誤報
+- 未處理：[[analyses/sbom-practice-talk.marp]] 的 `sources` 為 wiki 路徑（衍生頁設計）；「cyclonedx-npm 與 retire／Syft 清單差異待實測」散見 4 頁，待實測後一併更新
+- 備註：19 頁仍為 stub；[[standards/cyclonedx]] 仍含 2024-02 ISO 說法；OWASP SCVS、in-toto、SARIF、KEV、CSAF、Sigstore、SCA、Log4Shell、Dependency-Track 仍無專頁；法規一手來源（EO 14028、NTIA、CRA、CISA 2026）仍缺

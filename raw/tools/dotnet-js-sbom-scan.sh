@@ -41,7 +41,7 @@ retire --path WFAHRS/wwwroot/lib --outputformat cyclonedxJSON --outputpath "$JS_
 cyclonedx-win-x64 merge --input-files "$SBOM" "$JS_SBOM" --output-file "$ALL_SBOM" --output-format json
 
 trivy sbom "$ALL_SBOM" --scanners vuln    --format table --output ".sbom/$P.$V.vuln.txt"
-trivy sbom "$ALL_SBOM" --scanners vuln    --format json  --output ".sbom/$P.$V.vuln.json"
+trivy sbom "$ALL_SBOM" --scanners vuln    --list-all-pkgs=false --format json  --output ".sbom/$P.$V.vuln.json"
 
 # license 報告排除 System/Microsoft/runtime/NETStandard 開頭的套件(皆為 Microsoft 發行,可免費商用)
 LIC_SBOM=".sbom/$P.$V.lic.tmp.cdx.json"
