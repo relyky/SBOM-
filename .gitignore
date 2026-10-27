@@ -1,5 +1,7 @@
 .obsidian/workspace*.json
+.obsidian/graph.json
 .obsidian/cache
+.obsidian/plugins
 .trash/
 .DS_Store
 Thumbs.db
