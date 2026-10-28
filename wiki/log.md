@@ -167,3 +167,7 @@ updated: 2026-10-01
 - 結果：機械檢查全過（65 頁無失效連結、孤兒頁、frontmatter 缺欄；`raw/` 皆已 ingest；index 皆收錄）。`index` 頁首格式說明與 log 指向已刪除來源頁的連結為誤報
 - 未處理：[[analyses/sbom-practice-talk.marp]] 的 `sources` 為 wiki 路徑（衍生頁設計）；「cyclonedx-npm 與 retire／Syft 清單差異待實測」散見 4 頁，待實測後一併更新
 - 備註：19 頁仍為 stub；[[standards/cyclonedx]] 仍含 2024-02 ISO 說法；OWASP SCVS、in-toto、SARIF、KEV、CSAF、Sigstore、SCA、Log4Shell、Dependency-Track 仍無專頁；法規一手來源（EO 14028、NTIA、CRA、CISA 2026）仍缺
+
+## [2026-10-28] query | outputs/sbom-practice-talk.pptx 版面潤稿
+- 修改：`outputs/sbom-practice-talk.pptx`（僅版面，不改文字）——主題繁中字型對應由新細明體改為微軟正黑體；第 4 頁「說文解字」移除 `###` 標記、改用段距、標題對齊並補頁碼；第 2 頁調整提問區塊間距
+- 備註：使用者先前直接在 pptx 新增第 4 頁並修改第 2、9、10、13、14、28 頁文字，尚未回寫 [[analyses/sbom-practice-talk.marp]]，兩者內容已不一致。outputs/ 非 wiki 頁，無類型可對應，暫記為 query。
